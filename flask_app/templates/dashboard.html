@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Welcome {{ session['first_name'] }}</h1>
+    <p>These are all the shows</p>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Network</th>
+            <th>Release Date</th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
+        {% for show in shows %}
+        <tr>
+            <td>{{ show.title }}</td>
+            <td>{{ show.network }}</td>
+            <td>{{ show.release_date.date() }}</td>
+            <td>
+                <a href="/shows/{{ show.id}}">| Show |</a>
+
+                {% for unliked in unliked%}
+                {% if show.user_id != session['user_id'] %}
+                {% if unliked.id == show.id %}
+                <a href="add/like/{{ show.id }}">like |</a>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+
+                {% for like in like %}
+                {% if like.users_id == session['user_id'] %}
+                {% if show.id == like.shows_id %}
+                <a href="delete/like/{{ like.shows_id }}">un-like |</a>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+
+                {% if show.user_id == session['user_id'] %}
+                <a href="/shows/edit/{{ show.id}}">edit |</a>
+                <a href="/shows/{{ show.id }}/delete">delete |</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/shows/new">Add a new show</a>
+    <a href="/users/logout">Logout</a>
+
+</body>
+
+</html>
