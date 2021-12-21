@@ -26,23 +26,9 @@
         </tr>
     </table>
 
-    <p>Posted by: {{ creator.first_name }} {{ creator.last_name }} </p>
-    <p id="likes"></p>
+    <p>Posted by: {{ show.first_name }} {{ show.last_name }} </p>
 
-    <table id="num_of_likes">
-        {% if show.first_name != none %}
-        {% for user in show.favorites %}
-        <tr></tr>
-        {% endfor %}
-        {% endif %}
-    </table>
-    
-
-    <script>
-        var table = document.getElementById("num_of_likes");
-        var rows = table.rows.length;
-        document.getElementById("likes").innerHTML = "Likes: " + rows;
-    </script>
+    <p>Likes: {{ show.num_of_likes }}</p>
 
     <a href="/dashboard">All shows</a>
     <a href="/users/logout">Logout</a>

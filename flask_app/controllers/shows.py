@@ -1,6 +1,5 @@
 from flask_app import app
 from flask import render_template, redirect, request, flash, session
-from flask_app.models.like import Like
 from flask_app.models import user
 from flask_app.models.show import Show
 
@@ -9,14 +8,11 @@ def dashboard():
     if 'user_id' not in session:
         flash("This page is only available to logged in users.")
         return redirect("/")
-    shows = Show.get_all_shows()
     user_id = {
         'user_id' : session['user_id']
     }
-    like = Show.get_creator_likes(user_id)
-    unliked = Show.get_other_shows(user_id)
-    print(unliked)
-    return render_template("dashboard.html", shows = shows, like = like, unliked = unliked)
+    shows = Show.get_all_shows(user_id)
+    return render_template("dashboard.html", shows = shows)
 
 @app.route("/shows/new")
 def new_show():
@@ -45,8 +41,7 @@ def view_description(shows_id):
         'shows_id': shows_id
     }
     show = Show.view_description(data)
-    creator = Show.get_show_creator(data)
-    return render_template("view_description.html", show = show, creator = creator)
+    return render_template("view_description.html", show = show)
 
 @app.route("/shows/edit/<int:shows_id>")
 def edit_show(shows_id):
@@ -86,7 +81,7 @@ def add_like(shows_id):
         'users_id' : session['user_id'],
         'shows_id' : shows_id
     }
-    Like.add_like(data)
+    Show.add_like(data)
     return redirect("/dashboard")
 
 @app.route("/delete/like/<shows_id>")
@@ -95,5 +90,5 @@ def delete_like(shows_id):
         'users_id' : session['user_id'],
         'shows_id': shows_id
     }
-    Like.delete_like(data)
+    Show.delete_like(data)
     return redirect("/dashboard")

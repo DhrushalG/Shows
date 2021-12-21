@@ -25,26 +25,20 @@
             <td>{{ show.network }}</td>
             <td>{{ show.release_date.date() }}</td>
             <td>
-                <a href="/shows/{{ show.id}}">| Show |</a>
+                <a href="/shows/{{ show.id }}">| Show |</a>
 
-                {% for unliked in unliked%}
                 {% if show.user_id != session['user_id'] %}
-                {% if unliked.id == show.id %}
+                {% if show.shows_id == None %}
                 <a href="add/like/{{ show.id }}">like |</a>
                 {% endif %}
                 {% endif %}
-                {% endfor %}
 
-                {% for like in like %}
-                {% if like.users_id == session['user_id'] %}
-                {% if show.id == like.shows_id %}
-                <a href="delete/like/{{ like.shows_id }}">un-like |</a>
+                {% if show.shows_id != None %}
+                <a href="delete/like/{{ show.id }}">un-like |</a>
                 {% endif %}
-                {% endif %}
-                {% endfor %}
 
                 {% if show.user_id == session['user_id'] %}
-                <a href="/shows/edit/{{ show.id}}">edit |</a>
+                <a href="/shows/edit/{{ show.id }}">edit |</a>
                 <a href="/shows/{{ show.id }}/delete">delete |</a>
                 {% endif %}
             </td>
